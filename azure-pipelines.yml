@@ -80,6 +80,3 @@ stages:
               RuntimeStack: 'NODE|20LTS'
               StartupCommand: 'npm run start'
               ScriptType: 'Inline Script'
-              InlineScript: |
-                npm install
-                npm run build --if-present
