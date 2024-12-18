@@ -80,5 +80,3 @@ stages:
               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
               RuntimeStack: 'NODE|20LTS'
               StartupCommand: 'npm run start'
-              ScriptType: 'Inline Script'
-              InlineScript: 'You can provide your deployment commands here. One command per line.'
