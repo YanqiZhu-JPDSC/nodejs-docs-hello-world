@@ -28,7 +28,7 @@ stages:
     displayName: Build
     pool:
       name: Azure Pipelines
-      demands: Agent.Name -equals MyAgent
+      demands: Agent.Name -equals Hosted Agent
 
     steps:
     - task: NodeTool@0
