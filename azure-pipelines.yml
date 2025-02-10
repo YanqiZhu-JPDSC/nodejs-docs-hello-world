@@ -27,7 +27,8 @@ stages:
   - job: Build
     displayName: Build
     pool:
-      vmImage: $(vmImageName)
+      name: Azure Pipelines
+      demands: Agent.Name -equals MyAgent
 
     steps:
     - task: NodeTool@0
