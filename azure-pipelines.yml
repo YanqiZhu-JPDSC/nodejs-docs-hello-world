@@ -7,77 +7,80 @@ trigger:
 - main
 
 variables:
-
+- group: New variable group 10-3
   # Azure Resource Manager connection created during pipeline creation
-  azureSubscription: '11b41f7b-8442-4109-8e35-dde7c2748f16'
+  # azureSubscription: '11b41f7b-8442-4109-8e35-dde7c2748f16'
 
-  # Web app name
-  webAppName: 'nodeSample'
+  # # Web app name
+  # webAppName: 'nodeSample'
 
-  # Environment name
-  environmentName: 'nodeSample'
+  # # Environment name
+  # environmentName: 'nodeSample'
 
-  # Agent VM image name
-  vmImageName: 'ubuntu-latest'
+  # # Agent VM image name
+  # vmImageName: 'ubuntu-latest'
 
-stages:
-- stage: Build
-  displayName: Build stage
-  jobs:
-  - job: Build
-    displayName: Build
-    pool:
-      name: Azure Pipelines
-      demands: Agent.Name -equals Hosted Agent
+steps:
+- script: ls
 
-    steps:
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '20.x'
-      displayName: 'Install Node.js'
-    - task: CmdLine@2
-      displayName: 'npm install'
-      inputs:
-        script: |
-          npm install
-    - task: CmdLine@2
-      displayName: 'npm build'
-      inputs:
-        script: |
-          npm run build --if-present
-    - task: ArchiveFiles@2
-      displayName: 'Archive files'
-      inputs:
-        rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
-        includeRootFolder: false
-        archiveType: zip
-        archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-        replaceExistingArchive: true
+# stages:
+# - stage: Build
+#   displayName: Build stage
+#   jobs:
+#   - job: Build
+#     displayName: Build
+#     pool:
+#       name: Azure Pipelines
+#       demands: Agent.Name -equals Hosted Agent
 
-    - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
-      artifact: drop
+#     steps:
+#     - task: NodeTool@0
+#       inputs:
+#         versionSpec: '20.x'
+#       displayName: 'Install Node.js'
+#     - task: CmdLine@2
+#       displayName: 'npm install'
+#       inputs:
+#         script: |
+#           npm install
+#     - task: CmdLine@2
+#       displayName: 'npm build'
+#       inputs:
+#         script: |
+#           npm run build --if-present
+#     - task: ArchiveFiles@2
+#       displayName: 'Archive files'
+#       inputs:
+#         rootFolderOrFile: '$(System.DefaultWorkingDirectory)'
+#         includeRootFolder: false
+#         archiveType: zip
+#         archiveFile: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+#         replaceExistingArchive: true
 
-- stage: Deploy
-  displayName: Deploy stage
-  dependsOn: Build
-  condition: succeeded()
-  jobs:
-  - deployment: Deploy
-    displayName: Deploy
-    environment: $(environmentName)
-    pool:
-      vmImage: $(vmImageName)
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureRmWebAppDeployment@4
-            displayName: 'Azure App Service Deploy: nodeSample'
-            inputs:
-              ConnectionType: 'AzureRM'
-              azureSubscription: '$(azureSubscription)'
-              appType: 'webAppLinux'
-              WebAppName: '$(webAppName)'
-              packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
-              RuntimeStack: 'NODE|20LTS'
-              StartupCommand: 'npm run start'
+#     - upload: $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip
+#       artifact: drop
+
+# - stage: Deploy
+#   displayName: Deploy stage
+#   dependsOn: Build
+#   condition: succeeded()
+#   jobs:
+#   - deployment: Deploy
+#     displayName: Deploy
+#     environment: $(environmentName)
+#     pool:
+#       vmImage: $(vmImageName)
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - task: AzureRmWebAppDeployment@4
+#             displayName: 'Azure App Service Deploy: nodeSample'
+#             inputs:
+#               ConnectionType: 'AzureRM'
+#               azureSubscription: '$(azureSubscription)'
+#               appType: 'webAppLinux'
+#               WebAppName: '$(webAppName)'
+#               packageForLinux: '$(Pipeline.Workspace)/drop/$(Build.BuildId).zip'
+#               RuntimeStack: 'NODE|20LTS'
+#               StartupCommand: 'npm run start'
