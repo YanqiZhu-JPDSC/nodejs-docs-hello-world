@@ -6,8 +6,8 @@
 trigger:
 - main
 
-variables:
-- group: New variable group 10-3
+#variables:
+#- group: New variable group 10-3
   # Azure Resource Manager connection created during pipeline creation
   # azureSubscription: '11b41f7b-8442-4109-8e35-dde7c2748f16'
 
@@ -22,11 +22,11 @@ variables:
 
 steps:
 - script: ls
-- task: PublishBuildArtifacts@1
-  inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+#- task: PublishBuildArtifacts@1
+#  inputs:
+#    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+#    ArtifactName: 'drop'
+#    publishLocation: 'Container'
 
 # stages:
 # - stage: Build
